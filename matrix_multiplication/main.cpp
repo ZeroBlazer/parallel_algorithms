@@ -1,19 +1,31 @@
 #include <iostream>
+#include <stdio.h>
+
 // #include "linear.h"
 
 using namespace std;
 
-int const m = 2,
-          r = 3,
-          n = 3;
+int const /*m = 2,
+          r = 3,*/
+          n = 500,
+          s = 150;
 
-void print_matrix(auto R) {
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++)
-            cout << R[i][j] << "\t";
-        cout << endl;
+void create_matrix(int **&A, int r, int c) {
+    A = new int *[r];
+    for(int i=0; i < r; ++i) {
+        A[i] = new int[c];
+        for(int j=0; j < c; j++)
+            A[i][j] = rand()%10;
     }
 }
+
+// void print_matrix(auto R) {
+//     for (int i = 0; i < m; i++) {
+//         for (int j = 0; j < n; j++)
+//             cout << R[i][j] << "\t";
+//         cout << endl;
+//     }
+// }
 
 namespace Linear {
     void matrix_mult(auto a, auto b, auto c) {
@@ -40,19 +52,30 @@ namespace Blocked {
 }
 
 int main() {
-    int A[m][r] = { {2, 3, 1},
-                    {2, -7, 4}};
-    int B[r][n] = { {3, 4, 5},
-                    {1, 1, 4},
-                    {2, 1, 4}};
-    int L_R[m][n],      //Linear result
-        P_R[m][n];      //Blocked result
+    // int A[m][r] = { {2, 3, 1},
+    //                 {2, -7, 4}};
+    // int B[r][n] = { {3, 4, 5},
+    //                 {1, 1, 4},
+    //                 {2, 1, 4}};
+    // int L_R[m][n],      //Linear result
+    //     P_R[m][n];      //Blocked result
+
+    int **A,
+        **B,
+        **L_R,      //Linear result
+        **B_R;      //Blocked result
+
+    create_matrix(A, n, n);
+    create_matrix(B, n, n);
+    create_matrix(L_R, n, n);
+    create_matrix(B_R, n, n);
+
     cout << "\nLINEAR MULTIPLICATION\n-------------------------\n";
     Linear::matrix_mult(A, B, L_R);
-    print_matrix(L_R);
+    // print_matrix(L_R);
     cout << "\nBLOCKED MULTIPLICATION\n-------------------------\n";
-    Blocked::matrix_mult(A, B, P_R);
-    print_matrix(P_R);
+    Blocked::matrix_mult(A, B, B_R);
+    // print_matrix(P_R);
     cout << "\n\nDone ;)" << endl;
     return 0;
 }
