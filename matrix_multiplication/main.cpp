@@ -3,6 +3,8 @@
 
 // #include "linear.h"
 
+// #define LINEAR
+
 using namespace std;
 
 int const /*m = 2,
@@ -70,12 +72,15 @@ int main() {
     create_matrix(L_R, n, n);
     create_matrix(B_R, n, n);
 
+#ifdef LINEAR
     cout << "\nLINEAR MULTIPLICATION\n-------------------------\n";
     Linear::matrix_mult(A, B, L_R);
     // print_matrix(L_R);
+#else
     cout << "\nBLOCKED MULTIPLICATION\n-------------------------\n";
     Blocked::matrix_mult(A, B, B_R);
     // print_matrix(P_R);
+#endif
     cout << "\n\nDone ;)" << endl;
     return 0;
 }

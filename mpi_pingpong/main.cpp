@@ -2,7 +2,7 @@
 #include <string.h>  /* For strlen             */
 #include <mpi.h>     /* For MPI functions, etc */
 
-const int LIMIT = 20;
+const int LIMIT = 5;
 
 int main(void) {
     // char       greeting[MAX_STRING];
@@ -32,12 +32,12 @@ int main(void) {
             counter++;
             MPI_Send(&counter, 1, MPI_INT, othr_prank, 0,
                      MPI_COMM_WORLD);
-            printf(">>P%d sent %d to P%d\n", my_rank, counter, othr_prank);
+            printf(">> P%d sent %d to P%d\n", my_rank, counter, othr_prank);
         }
         else {
             MPI_Recv(&counter, 1, MPI_INT, othr_prank, 0,
                      MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            printf("<<P%d received %d from P%d\n", my_rank, counter, othr_prank);
+            printf("<< P%d received %d from P%d\n", my_rank, counter, othr_prank);
         }
     }
 

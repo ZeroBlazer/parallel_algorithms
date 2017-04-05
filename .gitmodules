@@ -4,3 +4,6 @@
 [submodule "informe_01"]
 	path = informe_01
 	url = https://git.overleaf.com/8837979kbxwjjxjpgbg
+[submodule "point_to_point_comm"]
+	path = point_to_point_comm
+	url = https://git.overleaf.com/8935751yqrzywmkjsyr
