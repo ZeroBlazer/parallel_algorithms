@@ -3,7 +3,7 @@ CFLAGS = -g -Wall #-std=c++14 #-Wall
 LIBS = #-lstdc++
 
 EXECS = mpi-book
-OBJS = trapezoidal.o
+OBJS = trapezoidal.o distribution.o
 NP ?= 4
 
 all: ${EXECS}
@@ -16,6 +16,9 @@ mpi-book: main.cpp ${OBJS}
 
 trapezoidal.o: trapezoidal.cpp trapezoidal.h 
 	${MPICC} ${CFLAGS} -c trapezoidal.cpp ${LIBS}
+
+distribution.o: distribution.cpp distribution.h 
+	${MPICC} ${CFLAGS} -c distribution.cpp ${LIBS}
 
 clean:
 	rm -f mpi-pingpong ${OBJS}

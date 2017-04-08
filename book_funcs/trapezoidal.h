@@ -9,3 +9,5 @@ float Trap(
 
 
 float f(float x);
+
+void trapezoidal();
