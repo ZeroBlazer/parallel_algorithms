@@ -4,11 +4,12 @@ LIBS = #-lstdc++
 
 EXECS = mpi-book
 OBJS = trapezoidal.o
+NP ?= 4
 
 all: ${EXECS}
 
 run: mpi-book
-	mpirun.mpich -n 2 ./mpi-book
+	mpirun.mpich -n ${NP} ./mpi-book
 
 mpi-book: main.cpp ${OBJS}
 	${MPICC} ${CFLAGS} -o mpi-book main.cpp ${OBJS} ${LIBS}
