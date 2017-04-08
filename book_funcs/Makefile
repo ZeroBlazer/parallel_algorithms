@@ -3,7 +3,7 @@ CFLAGS = -g -Wall #-std=c++14 #-Wall
 LIBS = #-lstdc++
 
 EXECS = mpi-book
-OBJS = trapezoidal.o distribution.o
+OBJS = trapezoidal.o distribution.o matrix_mult.o sorting.o
 NP ?= 4
 
 all: ${EXECS}
@@ -19,6 +19,12 @@ trapezoidal.o: trapezoidal.cpp trapezoidal.h
 
 distribution.o: distribution.cpp distribution.h 
 	${MPICC} ${CFLAGS} -c distribution.cpp ${LIBS}
+
+matrix_mult.o: matrix_mult.cpp matrix_mult.h 
+	${MPICC} ${CFLAGS} -c matrix_mult.cpp ${LIBS}
+
+sorting.o: sorting.cpp sorting.h 
+	${MPICC} ${CFLAGS} -c sorting.cpp ${LIBS}
 
 clean:
 	rm -f mpi-pingpong ${OBJS}
