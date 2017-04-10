@@ -1,28 +1,8 @@
-/* File:     mpi_mat_vect_time.c
- *
- * Purpose:  Implement parallel matrix-vector multiplication using
- *           one-dimensional arrays to store the vectors and the
- *           matrix.  Vectors use block distributions and the
- *           matrix is distributed by block rows.
- *
- * Compile:  mpicc -g -Wall -o mpi_mat_vect mpi_mat_vect.c
- * Run:      mpiexec -n <number of processes> ./mpi_mat_vect <n>
- *              n is the order of the system
- *
- * Input:    none
- * Output:   Elapsed time
- *
- * Notes:
- *    1. Number of processes should evenly divide n
- *    2. Define DEBUG for verbose output
- */
-
 #include "matrix_mult.h"
 
 int my_rank, comm_sz;
 MPI_Comm comm;
 
-/*-------------------------------------------------------------------*/
 int matrix_multiplication(int argc, char *argv[]) {
     double *local_A;
     double *local_x;
@@ -63,8 +43,8 @@ int matrix_multiplication(int argc, char *argv[]) {
 #endif
 
     if (my_rank == 0) {
-        //    printf("Elapsed time = %e\n", elapsed);
-        printf("%e\n", elapsed);
+        printf("Elapsed time = %e\n", elapsed);
+        // printf("%e\n", elapsed);
         //    fprintf(stderr, "From mat-vect: p = %d, n = %d, elapsed = %e\n",
         //          comm_sz, n, elapsed);
     }
@@ -76,7 +56,6 @@ int matrix_multiplication(int argc, char *argv[]) {
     return 0;
 } /* main */
 
-/*-------------------------------------------------------------------*/
 void Check_for_error(int local_ok /* in */,
                      char fname[] /* in */,
                      char message[] /* in */) {
@@ -95,7 +74,6 @@ void Check_for_error(int local_ok /* in */,
     }
 } /* Check_for_error */
 
-/*-------------------------------------------------------------------*/
 void Get_dims(int argc /* in  */,
               char *argv[] /* in  */,
               int *m_p /* out */,
@@ -105,16 +83,17 @@ void Get_dims(int argc /* in  */,
     int local_ok = 1;
 
     if (my_rank == 0) {
-        if (argc != 2)
+        if (argc != 3)
             *m_p = *n_p = 0;
         else
             *m_p = *n_p = strtol(argv[1], NULL, 10);
+        printf("m and n are: %d, %d\n", *m_p, *n_p);
     }
+
     MPI_Bcast(m_p, 1, MPI_INT, 0, comm);
     MPI_Bcast(n_p, 1, MPI_INT, 0, comm);
     if (*m_p <= 0 || *n_p <= 0 || *m_p % comm_sz != 0 || *n_p % comm_sz != 0)
         local_ok = 0;
-    printf("m and n are: %d, %d", *m_p, *n_p);
     Check_for_error(local_ok, "Get_dims",
                     "m and n must be positive and evenly divisible by comm_sz");
 
@@ -122,7 +101,6 @@ void Get_dims(int argc /* in  */,
     *local_n_p = *n_p / comm_sz;
 } /* Get_dims */
 
-/*-------------------------------------------------------------------*/
 void Allocate_arrays(double **local_A_pp /* out */,
                      double **local_x_pp /* out */,
                      double **local_y_pp /* out */,
@@ -141,7 +119,6 @@ void Allocate_arrays(double **local_A_pp /* out */,
     Check_for_error(local_ok, "Allocate_arrays", "Can't allocate local arrays");
 } /* Allocate_arrays */
 
-/*-------------------------------------------------------------------*/
 void Read_matrix(char prompt[] /* in  */,
                  double local_A[] /* out */,
                  int m /* in  */,
@@ -173,7 +150,6 @@ void Read_matrix(char prompt[] /* in  */,
     }
 } /* Read_matrix */
 
-/*-------------------------------------------------------------------*/
 void Read_vector(char prompt[] /* in  */,
                  double local_vec[] /* out */,
                  int n /* in  */,
@@ -201,7 +177,6 @@ void Read_vector(char prompt[] /* in  */,
     }
 } /* Read_vector */
 
-/*-------------------------------------------------------------------*/
 void Generate_matrix(double local_A[], int local_m, int n) {
     int i, j;
 
@@ -216,7 +191,6 @@ void Generate_matrix(double local_A[], int local_m, int n) {
 #endif
 } /* Generate_matrix */
 
-/*-------------------------------------------------------------------*/
 void Generate_vector(double local_x[], int local_n) {
     int i;
 
@@ -230,7 +204,6 @@ void Generate_vector(double local_x[], int local_n) {
 #endif
 } /* Generate_vector */
 
-/*-------------------------------------------------------------------*/
 void Print_matrix(char title[] /* in */,
                   double local_A[] /* in */,
                   int m /* in */,
@@ -247,7 +220,7 @@ void Print_matrix(char title[] /* in */,
                         "Can't allocate temporary matrix");
         MPI_Gather(local_A, local_m * n, MPI_DOUBLE, A, local_m * n, MPI_DOUBLE,
                    0, comm);
-        printf("\nThe matrix %s\n", title);
+        printf("\nMatrix %s\n", title);
         for (i = 0; i < m; i++) {
             for (j = 0; j < n; j++)
                 printf("%f ", A[i * n + j]);
@@ -263,7 +236,6 @@ void Print_matrix(char title[] /* in */,
     }
 } /* Print_matrix */
 
-/*-------------------------------------------------------------------*/
 void Print_vector(char title[] /* in */,
                   double local_vec[] /* in */,
                   int n /* in */,
@@ -279,7 +251,7 @@ void Print_vector(char title[] /* in */,
                         "Can't allocate temporary vector");
         MPI_Gather(local_vec, local_n, MPI_DOUBLE, vec, local_n, MPI_DOUBLE, 0,
                    comm);
-        printf("\nThe vector %s\n", title);
+        printf("\nVector %s\n", title);
         for (i = 0; i < n; i++)
             printf("%f ", vec[i]);
         printf("\n");
@@ -292,7 +264,6 @@ void Print_vector(char title[] /* in */,
     }
 } /* Print_vector */
 
-/*-------------------------------------------------------------------*/
 void Mat_vect_mult(double local_A[] /* in  */,
                    double local_x[] /* in  */,
                    double local_y[] /* out */,

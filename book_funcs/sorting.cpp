@@ -1,26 +1,7 @@
-/* File:    odd_even.c
- *
- * Purpose: Use odd-even transposition sort to sort a list of ints.
- *
- * Compile: gcc -g -Wall -o odd_even odd_even.c
- * Run:     odd_even <n> <g|i>
- *             n:   number of elements in list
- *            'g':  generate list using a random number generator
- *            'i':  user input list
- *
- * Input:   list (optional)
- * Output:  sorted list
- *
- * IPP:     Section 3.7.1 (p. 128) and Section 5.6.2 (pp. 233 and ff.)
- */
 #include "sorting.h"
 
-/* Keys in the random list in the range 0 <= key < RMAX */
 const int RMAX = 100;
 
-
-
-/*-----------------------------------------------------------------*/
 void sorting(int argc, char *argv[]) {
     int n;
     char g_i;
@@ -47,7 +28,7 @@ void sorting(int argc, char *argv[]) {
     Print_list(a, n, "After sort");
 
     free(a);
-} /* main */
+}
 
 /*-----------------------------------------------------------------
  * Function:  Usage
@@ -94,11 +75,6 @@ void Generate_list(int a[], int n) {
         a[i] = random() % RMAX;
 } /* Generate_list */
 
-/*-----------------------------------------------------------------
- * Function:  Print_list
- * Purpose:   Print the elements in the list
- * In args:   a, n
- */
 void Print_list(int a[], int n, char *title) {
     int i;
 
@@ -108,12 +84,6 @@ void Print_list(int a[], int n, char *title) {
     printf("\n\n");
 } /* Print_list */
 
-/*-----------------------------------------------------------------
- * Function:  Read_list
- * Purpose:   Read elements of list from stdin
- * In args:   n
- * Out args:  a
- */
 void Read_list(int a[], int n) {
     int i;
 
@@ -122,13 +92,8 @@ void Read_list(int a[], int n) {
         scanf("%d", &a[i]);
 } /* Read_list */
 
-/*-----------------------------------------------------------------
- * Function:     Odd_even_sort
- * Purpose:      Sort list using odd-even transposition sort
- * In args:      n
- * In/out args:  a
- */
-void Odd_even_sort(int a[] /* in/out */, int n /* in     */) {
+void Odd_even_sort(int a[] /* in/out */,
+                   int n /* in     */) {
     int phase, i, temp;
 
     for (phase = 0; phase < n; phase++)
@@ -148,21 +113,3 @@ void Odd_even_sort(int a[] /* in/out */, int n /* in     */) {
                 }
         }
 } /* Odd_even_sort */
-
-/****************************output*******************************************
-[rdissanayaka@hpc0 208 ~/CS351/mpi]$ gcc -o odd_even odd_even.c
-[rdissanayaka@hpc0 209 ~/CS351/mpi]$ ./odd_even 4 g
-Before sort:
-83 86 77 15
-
-After sort:
-15 77 83 86
-
-[rdissanayaka@hpc0 211 ~/CS351/mpi]$ ./odd_even 4 i
-Please enter the elements of the list
-5 9 4 3
-After sort:
-3 4 5 9
-
-[rdissanayaka@hpc0 212 ~/CS351/mpi]$
-*****************************************************************************/

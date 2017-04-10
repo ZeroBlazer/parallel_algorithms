@@ -7,8 +7,8 @@
 
 // #define TRAPEZOIDAL
 // #define DISTRIBUTION
-// #define MATRIX_MULT
-#define SORTING
+#define MATRIX_MULT
+// #define SORTING
 
 int main(int argc, char** argv) { 
 #ifdef TRAPEZOIDAL
