@@ -3,11 +3,12 @@
 #include "trapezoidal.h"
 #include "distribution.h"
 #include "matrix_mult.h"
+#include "sorting.h"
 
 // #define TRAPEZOIDAL
-#define DISTRIBUTION
+// #define DISTRIBUTION
 // #define MATRIX_MULT
-// #define SORTING
+#define SORTING
 
 int main(int argc, char** argv) { 
 #ifdef TRAPEZOIDAL
@@ -19,11 +20,12 @@ int main(int argc, char** argv) {
 #endif
 
 #ifdef MATRIX_MULT
-    // matrix_multiplication(400);
+    matrix_multiplication(argc, argv);
 #endif
     
 #ifdef SORTING
-    // matrix_multiplication(400);
+//  <n> <g>
+    sorting(argc, argv);
 #endif
 
     return 0;

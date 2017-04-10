@@ -5,11 +5,12 @@ LIBS = #-lstdc++
 EXECS = mpi-book
 OBJS = trapezoidal.o distribution.o matrix_mult.o sorting.o
 NP ?= 4
+MP ?= 8
 
 all: ${EXECS}
 
 run: mpi-book
-	mpirun.mpich -n ${NP} ./mpi-book
+	mpirun.mpich -n ${NP} ./mpi-book ${MP} g
 
 mpi-book: main.cpp ${OBJS}
 	${MPICC} ${CFLAGS} -o mpi-book main.cpp ${OBJS} ${LIBS}
