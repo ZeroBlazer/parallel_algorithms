@@ -27,5 +27,5 @@ sorting.o: sorting.cpp sorting.h
 	${MPICC} ${CFLAGS} -c sorting.cpp ${LIBS}
 
 clean:
-	rm -f mpi-pingpong ${OBJS}
+	rm -f ${EXECS} ${OBJS}
 	@echo "all cleaned up!"
