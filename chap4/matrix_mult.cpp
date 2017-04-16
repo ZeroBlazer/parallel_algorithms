@@ -3,6 +3,7 @@
 int thread_count,
     m,
     n;
+
 mat_type *A;
 mat_type *x;
 mat_type *y;
@@ -26,7 +27,7 @@ void matrix_multiplication(size_t thrd_cnt) {
     for(int thread = 0; thread < thread_count; thread++)
         pthread_join(thread_handles[thread], NULL);
 
-    printf("Result: \n"); Print_vector(y, m);
+    // printf("Result: \n"); Print_vector(y, m);
 
     free(A);    free(x);    free(y);
 }

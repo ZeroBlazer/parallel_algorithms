@@ -4,12 +4,12 @@ LIBS = -lpthread
 
 EXECS = chap4
 OBJS = matrix_mult.o pi-calc.o linked-list.o strtok.o
-NP ?= 4
+NT ?= 4
 
 all: ${EXECS}
 
 run: chap4
-	./chap4 ${NP}
+	./chap4 ${NT}
 
 chap4: main.cpp ${OBJS}
 	${CC} ${CFLAGS} -o chap4 main.cpp ${OBJS} ${LIBS}

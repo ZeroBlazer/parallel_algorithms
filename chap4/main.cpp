@@ -7,11 +7,24 @@
 - Implementar el problema presentado en la sección 4.11 del uso de strtok.
  *************************/
 
+#define MATRIX
+// #define PICALC
+// #define LINKED
+// #define STRTOK
+
 #include <stdio.h>
+#ifdef MATRIX
 #include "matrix_mult.h"
+#endif
+#ifdef PICALC
 #include "pi-calc.h"
+#endif
+#ifdef LINKED
 #include "linked-list.h"
+#endif
+#ifdef STRTOK
 #include "strtok.h"
+#endif
 
 void Usage(char* prog_name) {
     fprintf(stderr, "Uso: %s <n_threads>\n", prog_name);
@@ -23,7 +36,18 @@ int main(int argc, char** argv) {
         Usage(argv[0]);
     size_t thread_count = atoi(argv[1]);
 
+#ifdef MATRIX
     matrix_multiplication(thread_count);
+#endif
+#ifdef PICALC
+    pi_calculation(thread_count); 
+#endif
+#ifdef LINKED
+
+#endif
+#ifdef STRTOK
+
+#endif
 
     return 0;
 }
