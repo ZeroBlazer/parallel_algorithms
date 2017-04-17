@@ -1,12 +1,13 @@
 #include "pi-calc.h"
 
-// #define BUSYWAIT
-#define MUTEX
+#define BUSYWAIT
+// #define MUTEX
 
 extern int thread_count,
            n;
 extern long flag;
 extern pthread_t* thread_handles;
+extern double start, finish, elapsed;
 double sum;
 pthread_mutex_t mutex;
 
@@ -24,11 +25,19 @@ void pi_calculation(size_t thrd_cnt) {
     pthread_mutex_init(&mutex, NULL);
 #endif
 
+    /*************TIMING*****************/
+    start = clock();
+    /************************************/
+
     for(int thread = 0; thread < thread_count; thread++)
         pthread_create(&thread_handles[thread], NULL, Thread_sum, (void*)thread);
 
     for(int thread = 0; thread < thread_count; thread++)
         pthread_join(thread_handles[thread], NULL);
+
+    /*************TIMING*****************/
+    finish = clock();
+    /************************************/
 
 #ifdef MUTEX
     pthread_mutex_destroy(&mutex);
@@ -37,6 +46,11 @@ void pi_calculation(size_t thrd_cnt) {
     sum *= 4.0;
 
     printf("Pi: %f\n", sum);
+
+    /*************TIMING*****************/
+    elapsed = (finish - start)/CLOCKS_PER_SEC;
+    printf("Elapsed time = %e seconds\n", elapsed);
+    /************************************/
 }
 
 void* Thread_sum(void* rank) {

@@ -18,6 +18,7 @@ int thread_count,
     n;
 long flag;
 pthread_t* thread_handles;
+double start, finish, elapsed;
 
 void Usage(char* prog_name) {
     fprintf(stderr, "Uso: %s <n_threads>\n", prog_name);

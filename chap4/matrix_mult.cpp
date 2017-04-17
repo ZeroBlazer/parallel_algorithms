@@ -4,6 +4,7 @@ extern int thread_count,
     m,
     n;
 extern pthread_t* thread_handles;
+extern double start, finish, elapsed;
 
 mat_type *A;
 mat_type *x;
@@ -22,15 +23,28 @@ void matrix_multiplication(size_t thrd_cnt) {
 
     thread_handles = (pthread_t*) malloc(thread_count * sizeof(pthread_t));
 
+    /*************TIMING*****************/
+    start = clock();
+    /************************************/
+
     for(int thread = 0; thread < thread_count; thread++)
         pthread_create(&thread_handles[thread], NULL, Pth_mat_vect, (void*)thread);
 
     for(int thread = 0; thread < thread_count; thread++)
         pthread_join(thread_handles[thread], NULL);
 
+    /*************TIMING*****************/
+    finish = clock();
+    /************************************/
+
     // printf("Result: \n"); Print_vector(y, m);
 
     free(A);    free(x);    free(y);
+
+    /*************TIMING*****************/
+    elapsed = (finish - start)/CLOCKS_PER_SEC;
+    printf("Elapsed time = %e seconds\n", elapsed);
+    /************************************/
 }
 
 void mem_allocate(mat_type* &A, mat_type* &x, mat_type* &y, int m, int n) {
