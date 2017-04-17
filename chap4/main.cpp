@@ -31,7 +31,8 @@ int main(int argc, char** argv) {
     size_t thread_count = atoi(argv[1]);
 
     // matrix_multiplication(thread_count);
-    pi_calculation(thread_count); 
+    // pi_calculation(thread_count); 
+    linked_list_operations(thread_count); 
 
     return 0;
 }
