@@ -5,7 +5,7 @@ extern int thread_count,
            m;
 extern pthread_t* thread_handles;
 extern double start, finish, elapsed;
-float member_p, insert_p, delete_p;
+double member_p, insert_p, delete_p;
 
 #define ONEMUTEX
 // #define MUTEXPERNODE
@@ -26,18 +26,25 @@ struct list_node_s *head_p = NULL;
 #endif
 
 void linked_list_operations(size_t thrd_cnt) {
-    thread_count = thrd_cnt;
+    printf("> Operaciones en una linked list, ingrese key_N, Ops_n, Member, Insert, Delete:\n");
+    printf("Before allocating memory");
 
-    printf("> Operaciones en una linked list, ingrese <key_N> <Ops_n> <Member%> <Insert%> <Delete%>: ");
-    scanf("%i%i%f%f%f", &n, &m, &member_p, &insert_p, &delete_p);
+    thread_count = thrd_cnt;
+    m = 1000;
+    n = 100000;
+    member_p = 99.9;
+    insert_p = 0.05;
+    delete_p = 0.05;
 
     thread_handles = (pthread_t*) malloc(thread_count * sizeof(pthread_t));
 
     /*************INSERT KEYS*****************/
+    printf("Before inserting random elements");
     for(int i = 0; i < n; i++) {	
 		if(!Insert(rand()%54321))
 			i--;
     }
+    printf("After inserting random elements");
     /*****************************************/
 
 #ifdef ONEMUTEX
@@ -163,32 +170,32 @@ int Delete(int value) {
 }
 #endif
 
-// #ifdef MUTEXPERNODE
-// int Member(int value) {
-//     struct list_node_s* temp_p;
+#ifdef MUTEXPERNODE
+int Member(int value) {
+    struct list_node_s* temp_p;
  
-//     pthread_mutex_lock(&head_p_mutex);
-//     temp_p = head_p;
-//     while(temp_p != NULL && temp_p->data < value) {
-//         if(temp_p->next != NULL)
-//             pthread_mutex_lock(&(temp_p->next->mutex));
-//         if (temp_p == head_p)
-//             pthread_mutex_unlock(&head_p_mutex);
-//         pthread_mutex_unlock(&(temp_p->mutex));
-//         temp_p = temp_p->next;
-//     }
+    pthread_mutex_lock(&head_p_mutex);
+    temp_p = head_p;
+    while(temp_p != NULL && temp_p->data < value) {
+        if(temp_p->next != NULL)
+            pthread_mutex_lock(&(temp_p->next->mutex));
+        if (temp_p == head_p)
+            pthread_mutex_unlock(&head_p_mutex);
+        pthread_mutex_unlock(&(temp_p->mutex));
+        temp_p = temp_p->next;
+    }
  
-//     if(temp_p == NULL || temp_p->data > value) {
-//         if (temp_p == head_p)
-//             pthread_mutex_unlock(&head_p_mutex);
-//         if (temp_p != NULL)
-//             pthread_mutex_unlock(&(temp_p->mutex));
-//         return 0;
-//     } else {
-//         if (temp_p == head_p)
-//             pthread_mutex_unlock(&head_p_mutex);
-//         pthread_mutex_unlock(&(temp_p->mutex));
-//         return 1;
-//     }
-// }
-// #endif
+    if(temp_p == NULL || temp_p->data > value) {
+        if (temp_p == head_p)
+            pthread_mutex_unlock(&head_p_mutex);
+        if (temp_p != NULL)
+            pthread_mutex_unlock(&(temp_p->mutex));
+        return 0;
+    } else {
+        if (temp_p == head_p)
+            pthread_mutex_unlock(&head_p_mutex);
+        pthread_mutex_unlock(&(temp_p->mutex));
+        return 1;
+    }
+}
+#endif
