@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
 
     // matrix_multiplication(thread_count);
     // pi_calculation(thread_count); 
+    printf("Here!");
     linked_list_operations(thread_count); 
 
     return 0;

@@ -1,8 +1,8 @@
 #include "linked-list.h"
 
 extern int thread_count,
-           n,
-           m;
+    m,
+    n;
 extern pthread_t* thread_handles;
 extern double start, finish, elapsed;
 float member_p, insert_p, delete_p;
@@ -26,10 +26,16 @@ struct list_node_s *head_p = NULL;
 #endif
 
 void linked_list_operations(size_t thrd_cnt) {
+    
     thread_count = thrd_cnt;
 
-    printf("> Operaciones en una linked list, ingrese <key_N> <Ops_n> <Member%> <Insert%> <Delete%>: ");
-    scanf("%i%i%f%f%f", &n, &m, &member_p, &insert_p, &delete_p);
+    // printf("> Operaciones en una linked list, ingrese <key_N> <Ops_n> <Member%> <Insert%> <Delete%>: ");
+    // scanf("%i%i%f%f%f", &n, &m, &member_p, &insert_p, &delete_p);
+    n = 1000;
+    m = 100000;
+    member_p = 99.9;
+    insert_p = 0.05;
+    delete_p = 0.05;
 
     thread_handles = (pthread_t*) malloc(thread_count * sizeof(pthread_t));
 
