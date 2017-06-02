@@ -16,12 +16,12 @@ void rand_matrix(float* M, int N) {
     }
 }
 
-// __global__
-// void mtrx_sum_elem(float* C, float* A, float* B, int N) {
-//     int row = blockIdx.y * blockDim.y + threadIdx.y;
-//     int col = blockIdx.x * blockDim.x + threadIdx.x;
+__global__
+void mtrx_sum_elem(float* C, float* A, float* B, int N) {
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-// }
+}
 
 // __global__
 // void mtrx_sum_row(float* C, float* A, float* B, int N) {
@@ -63,30 +63,45 @@ int main(void) {
     cudaMalloc(&d_A, N * N * sizeof(float));
     cudaMalloc(&d_B, N * N * sizeof(float));
     cudaMalloc(&d_C, N * N * sizeof(float));
+/*******************************************************/
+    // dim3 threadsPerBlock(N, N);
+    // dim3 blocksPerGrid(1, 1);
+    //     if (N*N > 512){
+    //         threadsPerBlock.x = 512;
+    //         threadsPerBlock.y = 512;
+    //         blocksPerGrid.x = ceil(double(N)/double(threadsPerBlock.x));
+    //         blocksPerGrid.y = ceil(double(N)/double(threadsPerBlock.y));
+    //     }
 /****************FILLING RANDOM MATRIX******************/    
     rand_matrix<<<ceil(N/256.0), 256>>>(d_A, N);
     rand_matrix<<<ceil(N/256.0), 256>>>(d_B, N);
     rand_matrix<<<ceil(N/256.0), 256>>>(d_C, N);
-/***************PRINTING RANDOM MATRIX******************/
+/***************PRINTING RANDOM MATRICES****************/
     cudaMemcpy(A, d_A, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     cudaMemcpy(B, d_B, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
     print_matrix(A, N);
     print_matrix(B, N);
 /*******************************************************/
-    
-//   cudaMemcpy(d_x, x, N*sizeof(float), cudaMemcpyHostToDevice);
-//   cudaMemcpy(d_y, y, N*sizeof(float), cudaMemcpyHostToDevice);
+    mtrx_sum_elem<<<ceil(N/256.0), 256>>>(d_C, d_A, d_C, N);
+    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
-//   // Perform SAXPY on 1M elements
-//   saxpy<<<(N+255)/256, 256>>>(N, 2.0f, d_x, d_y);
+    print_matrix(C, N);
+/*******************************************************/
+//     mtrx_sum_row<<<ceil(N/256.0), 256>>>(d_C, d_A, d_C, N);
+//     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
-//   cudaMemcpy(y, d_y, N*sizeof(float), cudaMemcpyDeviceToHost);
+//     print_matrix(C, N);
+// /*******************************************************/
+//     mtrx_sum_column<<<ceil(N/256.0), 256>>>(d_C, d_A, d_C, N);
+//     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
-  cudaFree(d_A);
-  cudaFree(d_B);
-  cudaFree(d_C);
-  free(A);
-  free(B);
-  free(C);
+//     print_matrix(C, N);
+/*******************************************************/
+    cudaFree(d_A);
+    cudaFree(d_B);
+    cudaFree(d_C);
+    free(A);
+    free(B);
+    free(C);
 }
