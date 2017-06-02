@@ -67,18 +67,18 @@ int main(void) {
     cudaMalloc(&d_B, N * N * sizeof(float));
     cudaMalloc(&d_C, N * N * sizeof(float));
 /*******************************************************/
-    // dim3 threadsPerBlock(N, N);
-    // dim3 blocksPerGrid(1, 1);
-    //     if (N*N > 512){
-    //         threadsPerBlock.x = 512;
-    //         threadsPerBlock.y = 512;
-    //         blocksPerGrid.x = ceil(double(N)/double(threadsPerBlock.x));
-    //         blocksPerGrid.y = ceil(double(N)/double(threadsPerBlock.y));
-    //     }
+    dim3 threadsPerBlock(N, N);
+    dim3 blocksPerGrid(1, 1);
+    if (N*N > 512) {
+        threadsPerBlock.x = 512;
+        threadsPerBlock.y = 512;
+        blocksPerGrid.x = ceil(double(N)/double(threadsPerBlock.x));
+        blocksPerGrid.y = ceil(double(N)/double(threadsPerBlock.y));
+    }
 /****************FILLING RANDOM MATRIX******************/    
-    rand_matrix<<<ceil(N/256.0), 256>>>(d_A, N);
-    rand_matrix<<<ceil(N/256.0), 256>>>(d_B, N);
-    rand_matrix<<<ceil(N/256.0), 256>>>(d_C, N);
+    rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_A, N);
+    rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_B, N);
+    rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_C, N);
 /***************PRINTING RANDOM MATRICES****************/
     cudaMemcpy(A, d_A, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     cudaMemcpy(B, d_B, N * N * sizeof(float), cudaMemcpyDeviceToHost);
@@ -86,7 +86,7 @@ int main(void) {
     print_matrix(A, N);
     print_matrix(B, N);
 /*******************************************************/
-    mtrx_sum_elem<<<ceil(N/256.0), 256>>>(d_C, d_A, d_C, N);
+    mtrx_sum_elem<<<blocksPerGrid, threadsPerBlock>>>(d_C, d_A, d_C, N);
     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
     print_matrix(C, N);
