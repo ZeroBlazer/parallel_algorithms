@@ -26,11 +26,16 @@ void mtrx_sum_elem(float* C, float* A, float* B, int N) {
     }
 }
 
-// __global__
-// void mtrx_sum_row(float* C, float* A, float* B, int N) {
-//     int i = blockIdx.x * blockDim.x + threadIdx.x;
+__global__
+void mtrx_sum_row(float* C, float* A, float* B, int N) {
+    int id = blockIdx.x * blockDim.x + threadIdx.x;
 
-// }
+    if(id < N) {
+        for(int i = 0; i < N; ++i) {
+            C[id * N + i] = A[id * N + i] + B[id * N + i];
+        }
+    }
+}
 
 // __global__
 // void mtrx_sum_column(float* C, float* A, float* B, int N) {
@@ -91,11 +96,11 @@ int main(void) {
 
     print_matrix(C, N);
 /*******************************************************/
-//     mtrx_sum_row<<<ceil(N/256.0), 256>>>(d_C, d_A, d_C, N);
-//     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
+    mtrx_sum_row<<<ceil(N * N / 512.0), 512>>>(d_C, d_A, d_C, N);
+    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
-//     print_matrix(C, N);
-// /*******************************************************/
+    print_matrix(C, N);
+/*******************************************************/
 //     mtrx_sum_column<<<ceil(N/256.0), 256>>>(d_C, d_A, d_C, N);
 //     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
