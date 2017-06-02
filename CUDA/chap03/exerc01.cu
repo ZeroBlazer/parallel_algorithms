@@ -21,6 +21,9 @@ void mtrx_sum_elem(float* C, float* A, float* B, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
+    if(row < N && col < N) {
+        C[row * N + col] = A[row * N + col] + B[row * N + col];
+    }
 }
 
 // __global__
