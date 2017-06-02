@@ -37,12 +37,14 @@ void rand_matrix(float* M, int N) {
 
 __host__
 void print_matrix(float* M, int N) {
+    printf("============================================\n");
     for(int i = 0; i < N; ++i) {
         for(int j = 0; j < N; ++j) {
             printf("%d\t", M[i * N + j]);
         }
         printf("\n");
     }
+    printf("============================================\n\n");
 }
 
 int main(void) {
