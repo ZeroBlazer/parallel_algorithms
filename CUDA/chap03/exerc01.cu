@@ -62,9 +62,9 @@ int main(void) {
     cudaMalloc(&d_B, N * N * sizeof(float));
     cudaMalloc(&d_C, N * N * sizeof(float));
 /****************FILLING RANDOM MATRIX******************/    
-    rand_matrix<<<ceil(n/256.0), 256>>>(d_A, N);
-    rand_matrix<<<ceil(n/256.0), 256>>>(d_B, N);
-    rand_matrix<<<ceil(n/256.0), 256>>>(d_C, N);
+    rand_matrix<<<ceil(N/256.0), 256>>>(d_A, N);
+    rand_matrix<<<ceil(N/256.0), 256>>>(d_B, N);
+    rand_matrix<<<ceil(N/256.0), 256>>>(d_C, N);
 /***************PRINTING RANDOM MATRIX******************/
     cudaMemcpy(A, d_A, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     cudaMemcpy(B, d_B, N * N * sizeof(float), cudaMemcpyDeviceToHost);
