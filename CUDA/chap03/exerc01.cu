@@ -39,7 +39,7 @@ void mtrx_sum_row(float* C, float* A, float* B, int N) {
 
 __global__
 void mtrx_sum_column(float* C, float* A, float* B, int N) {
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int id = blockIdx.x * blockDim.x + threadIdx.x;
 
     if(id < N) {
         for(int i = 0; i < N; ++i) {
