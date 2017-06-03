@@ -1,0 +1,2 @@
+# HISTCONTROL=ignoreboth
+export HISTIGNORE=' *'
