@@ -15,10 +15,8 @@ int main(int argc, char* argv[]) {
            y,
            z;
 
-#pragma omp parallel num_threads(n_threads) reduction(+:count) \
-    default (none) private(i, x, y, z) shared(n_iter)
-{
-    srandom((int)time(NULL) ^ omp_get_thread_num());
+#pragma omp parallel for num_threads(n_threads) reduction(+:count) \
+    default (none) private(i, x, y, z) shared(count, n_iter)
     for(i = 0; i < n_iter; i++) {
         x = (double) rand() / RAND_MAX;
         y = (double) rand() / RAND_MAX;
@@ -26,7 +24,7 @@ int main(int argc, char* argv[]) {
         if (z<=1)
             ++count; 
     }
-}
+
     double pi = 4.0 * ((double) count / (double) (n_iter * n_threads));
     printf("Pi: %f\n", pi);
     
