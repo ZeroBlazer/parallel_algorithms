@@ -1,0 +1,1 @@
+sh myBlast.sh -i -v

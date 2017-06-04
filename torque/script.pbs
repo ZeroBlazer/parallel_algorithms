@@ -4,6 +4,6 @@
 #PBS -M elpumitaelias@gmail.com
 #PBS -m ea
 
-source ~/.bashrc
-cd $HOME/work/dir
-sh myBlast.sh -i -v
+source ~/environment.sh
+cd $HOME/projects/parallel_algorithms/mpi_pingpong/
+make
