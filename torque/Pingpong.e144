@@ -1,0 +1,2 @@
+make: mpirun.mpich: No se encontró el programa
+make: *** [run] Error 127
