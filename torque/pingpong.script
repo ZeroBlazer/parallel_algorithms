@@ -1,9 +1,10 @@
-#PBS -N localBlast
+#PBS -k o
+#PBS -N Pingpong
 #PBS -S /bin/sh
-#PBS -l nodes=1:ppn=2,walltime=240:00:00
+#PBS -l nodes=1:ppn=2,walltime=05:00
 #PBS -M elpumitaelias@gmail.com
-#PBS -m ea
+#PBS -m bea
 
 source ~/environment.sh
 cd $HOME/projects/parallel_algorithms/mpi_pingpong/
-make
+make run
