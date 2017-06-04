@@ -7,5 +7,5 @@
 #PBS -o output
 
 source ~/environment.sh
-cd $HOME/projects/parallel_algorithms/mpi_pingpong/
+cd ~/projects/parallel_algorithms/mpi_pingpong/
 make run
