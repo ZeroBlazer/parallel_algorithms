@@ -7,5 +7,5 @@
 #PBS -o output
 
 source ~/environment.sh
-cd /projects/parallel_algorithms/chap05
-make run02
+cd ~/projects/parallel_algorithms/chap05
+./exerc02 1000000000 16
