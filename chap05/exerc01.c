@@ -21,18 +21,19 @@
 // 3. Count sort
 
 /*********************************************/
+int find_bin(float data, float bin_maxes[], int bin_count, float min_meas) {
 
-void Hello(void);
+}
 
 int main(int argc, char* argv[]) {
     int thread_count = strtol(argv[1], NULL, 10);
 
     int data_count = 20;
     float data[] = {1.3,2.9,0.4,0.3,1.3,4.4,1.7,0.4,3.2,0.3,4.9,2.4,3.1,4.4,3.9,0.4,4.2,4.5,4.9,0.9};
-    int min_meas,
-        max_meas,
-        bin_count = ;
-    float bin_maxes[data_count];
+    int bin_count = 5;
+    float bin_maxes[data_count],
+          min_meas,
+          max_meas;
 
     for(int i = 0; i < n; i++) {
         if(data[i] < min_m)
@@ -41,17 +42,21 @@ int main(int argc, char* argv[]) {
             max_meas = data[i];
     }
 
-    
+    float bin_width = (max_meas − min_meas) / bin_count;
+
+    for ( b = 0; b < bin_count ; b ++) {
+        
+        bin_maxes[b] = min_meas + bin_width * (b +1);
+    }
 
 #pragma omp parallel num_threads(thread_count)
-    Hello();
-
-    return 0;
+{
+    #pragma omp parallel for schedule(auto)
+    for(i = 0; i < data_count; ++i) {
+        bin = find_bin(data[i], bin_maxes, bin_count, min_meas);
+        bin_counts[bin]++;
+    }    
 }
 
-void Hello(void) {
-    int my_rank = omp_get_thread_num();
-    int thread_count = omp_get_num_threads();
-
-    printf("Hello from thread %d of %d\n", my_rank, thread_count);
+    return 0;
 }
