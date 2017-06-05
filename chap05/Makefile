@@ -4,7 +4,7 @@ LIBS =
 
 EXECS = exerc01.out exerc02.out exerc03.out
 OBJS =
-NI ?= 10000000000
+NI ?= 10000000
 NT ?= 16
 
 all: ${EXECS}
