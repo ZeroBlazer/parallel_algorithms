@@ -16,7 +16,7 @@ run02: exerc02.out
 	./exerc02.out ${NI} ${NT}
 
 run03: exerc03.out
-	./exerc03.out ${NT}
+	./exerc03.out ${NI} ${NT}
 
 exerc01.out: exerc01.c ${OBJS}
 	${CC} ${CFLAGS} -o exerc01.out exerc01.c ${OBJS} ${LIBS}

@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <omp.h>
 
-void Count sort(int a[], int n) {
+void count_sort(int a[], int n) {
     int i, j, count;
-    int∗ temp = malloc(n∗sizeof(int));
+    int* temp = malloc(n * sizeof(int));
     
+    #pragma omp parallel for shared(a, n, temp) private(i, j, count)
     for (i = 0; i < n; i++) {
         count = 0;
         for (j = 0; j < n; j++)
@@ -16,35 +17,41 @@ void Count sort(int a[], int n) {
         temp[count] = a[i];
     }
 
-    memcpy(a, temp, n∗sizeof(int));
-    free(temp);
+    #pragma omp parallel for shared(a, n, temp) private(i)
+	for (i = 0; i < n; i++)
+        a[i] = temp[i];
+        
+    free((int*) temp);
+}
+
+void print_v(int a[], int n) {
+    int i;
+	for (i = 0; i < n; i++)
+        printf("%d, ", a[i]);
+    printf("\n");
 }
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        printf("Especify number of iterations");
+        printf("Especify number of iterations and threads");
         return 0;
     }
-    long long int n_iter = atoi(argv[1]);
+    long long int n = atoi(argv[1]);
     long long int n_threads = atoi(argv[2]);
-    int i,
-        count = 0;
-    double x,
-           y,
-           z;
 
-#pragma omp parallel for num_threads(n_threads) reduction(+:count) \
-    default (none) private(i, x, y, z) shared(count, n_iter)
-    for(i = 0; i < n_iter; i++) {
-        x = (double) rand() / RAND_MAX;
-        y = (double) rand() / RAND_MAX;
-        z = (x * x) + (y * y);
-        if (z<=1)
-            ++count; 
-    }
-
-    double pi = 4.0 * ((double) count / (double) (n_iter * n_threads));
-    printf("Pi: %f\n", pi);
+    int *a = malloc(n * sizeof(int));
     
+#pragma omp parallel num_threads(n_threads) default (none) shared(a, n)
+{
+    int i;
+    srandom((int)time(NULL) ^ omp_get_thread_num());
+    #pragma omp for
+    for(i = 0; i < n; i++)
+        a[i] = (int) rand() % 99;
+}
+
+    count_sort(a, n);
+    print_v(a, n);
+
     return 0;
 }
