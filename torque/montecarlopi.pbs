@@ -8,4 +8,4 @@
 
 source ~/environment.sh
 cd ~/projects/parallel_algorithms/chap05
-make run02
+./exerc02.out 10000000 16
