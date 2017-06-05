@@ -36,9 +36,12 @@ int main(int argc, char* argv[]) {
 
     for(int i = 0; i < n; i++) {
         if(data[i] < min_m)
-            min_m = data[i];
+            min_meas = data[i];
         if(data[i] > bin_max)
+            max_meas = data[i];
     }
+
+    
 
 #pragma omp parallel num_threads(thread_count)
     Hello();
