@@ -3,4 +3,5 @@
 
 source ~/environment.sh
 cd ~/projects/parallel_algorithms/mpi_pingpong/
+make clean
 make run
