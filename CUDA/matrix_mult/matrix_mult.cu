@@ -91,7 +91,7 @@ int main(void) {
     print_matrix(A, N);
     print_matrix(B, N);
 /*******************************************************/
-    mtrx_mult<<<blocksPerGrid, threadsPerBlock>>>(d_C, d_A, d_C, N);
+    mtrx_mult<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
     print_matrix(C, N);
