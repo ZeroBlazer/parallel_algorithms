@@ -91,9 +91,20 @@ int main(void) {
     print_matrix(A, N);
     print_matrix(B, N);
 /*******************************************************/
-    mtrx_mult<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
-    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaEvent_t start, stop;
+	float elapsedTime;
+	cudaEventCreate(&start);
+    cudaEventRecord(start,0);
 
+    mtrx_mult<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
+    
+    cudaEventCreate(&stop);
+	cudaEventRecord(stop,0);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&elapsedTime, start,stop);
+    printf("Elapsed time : %f ms\n" ,elapsedTime);
+
+    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     print_matrix(C, N);
 /*******************************************************/
     cudaFree(d_A);
