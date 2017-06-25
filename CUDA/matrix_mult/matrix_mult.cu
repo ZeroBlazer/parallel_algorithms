@@ -11,9 +11,9 @@ void rand_matrix(float* M, int N) {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
     if(row < N && col < N) {
-        curandState_t state;
+        // curandState_t state;
         // curand_init(0, 0, 0, &state);
-        M[row * N + col] = (row * col + row - col) % MAX;//curand(&state) % MAX;
+        M[row * N + col] = (col + row * col) % MAX;//curand(&state) % MAX;
     }
 }
 
@@ -56,7 +56,7 @@ void print_matrix(float* M, int N) {
 }
 
 int main(void) {
-    int N = 32;  // int N = 1<<20;
+    int N = 16;  // int N = 1<<20;
     float *A,
           *B,
           *C,
