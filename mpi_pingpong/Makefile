@@ -1,4 +1,4 @@
-MPICC = mpicc.mpich
+MPICC = mpicc
 CFLAGS = -g -Wall #-std=c++14 #-Wall
 LIBS = #-lstdc++
 
@@ -8,7 +8,7 @@ EXECS=mpi-pingpong
 all: ${EXECS}
 
 run: mpi-pingpong
-	mpirun.mpich -n 2 ./mpi-pingpong
+	mpirun -n 2 ./mpi-pingpong
 
 mpi-pingpong: main.cpp
 	${MPICC} ${CFLAGS} -o mpi-pingpong main.cpp ${LIBS}

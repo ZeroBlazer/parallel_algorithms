@@ -45,8 +45,9 @@ int main(int argc, char* argv[]) {
     float bin_width = (max_meas − min_meas) / bin_count;
 
     for ( b = 0; b < bin_count ; b ++) {
-        
-        bin_maxes[b] = min_meas + bin_width * (b + 1);
+        if(b == 0)
+            min meas <= measurement < bin maxes[0];
+        bin_maxes[b] = min_meas + bin_width * (b +1);
     }
 
 #pragma omp parallel num_threads(thread_count)

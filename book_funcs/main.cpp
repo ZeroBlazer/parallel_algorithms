@@ -6,8 +6,8 @@
 #include "sorting.h"
 
 // #define TRAPEZOIDAL
-#define DISTRIBUTION
-// #define MATRIX_MULT
+// #define DISTRIBUTION
+#define MATRIX_MULT
 // #define SORTING
 
 int main(int argc, char** argv) { 

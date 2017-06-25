@@ -7,5 +7,4 @@
 #PBS -o output
 
 source ~/environment.sh
-cd ~/projects/parallel_algorithms/chap05
-./exerc02.out 10000000 16
+~/projects/parallel_algorithms/chap05/exerc02.out 10000000 16
