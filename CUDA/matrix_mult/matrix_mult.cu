@@ -56,7 +56,7 @@ void print_matrix(float* M, int N) {
 }
 
 int main(void) {
-    int N = 5;  // int N = 1<<20;
+    int N = 32;  // int N = 1<<20;
     float *A,
           *B,
           *C,
