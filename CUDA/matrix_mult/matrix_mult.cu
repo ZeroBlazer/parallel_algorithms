@@ -12,8 +12,8 @@ void rand_matrix(float* M, int N) {
 
     if(row < N && col < N) {
         curandState_t state;
-        curand_init(0, 0, 0, &state);
-        M[row * N + col] = curand(&state) % MAX;
+        // curand_init(0, 0, 0, &state);
+        M[row * N + col] = (row * col + row - col) % MAX;//curand(&state) % MAX;
     }
 }
 
@@ -102,10 +102,10 @@ int main(void) {
 	cudaEventRecord(stop,0);
 	cudaEventSynchronize(stop);
 	cudaEventElapsedTime(&elapsedTime, start,stop);
-    printf("Elapsed time : %f ms\n" ,elapsedTime);
 
     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     print_matrix(C, N);
+    printf("Elapsed time : %f ms\n", elapsedTime);
 /*******************************************************/
     cudaFree(d_A);
     cudaFree(d_B);
