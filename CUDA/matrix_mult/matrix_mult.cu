@@ -105,8 +105,8 @@ int main(void) {
     cudaMemcpy(A, d_A, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     cudaMemcpy(B, d_B, N * N * sizeof(float), cudaMemcpyDeviceToHost);
 
-    print_matrix(A, N);
-    print_matrix(B, N);
+    // print_matrix(A, N);
+    // print_matrix(B, N);
 /*******************************************************/
     cudaEvent_t start, stop;
 	float elapsedTime;
@@ -122,6 +122,7 @@ int main(void) {
 
     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     // print_matrix(C, N);
+    printf("N: %d ms\n", N);
     printf("SM Runtime : %f ms\n", elapsedTime);
 /*******************************************************/
 	cudaEventCreate(&start);
