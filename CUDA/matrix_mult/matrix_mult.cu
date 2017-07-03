@@ -43,6 +43,23 @@ void mtrx_mult(float* d_M, float* d_N, float* d_P, int Width) {
     d_P[Row * Width + Col] = Pvalue;
 }
 
+__global__
+void matrixMultiplicationKernel(float* A, float* B, float* C, int N) {
+
+    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+    int COL = blockIdx.x*blockDim.x+threadIdx.x;
+
+    float tmpSum = 0;
+
+    if (ROW < N && COL < N) {
+        // each thread computes one element of the block sub-matrix
+        for (int i = 0; i < N; i++) {
+            tmpSum += A[ROW * N + i] * B[i * N + COL];
+        }
+    }
+    C[ROW * N + COL] = tmpSum;
+}
+
 __host__
 void print_matrix(float* M, int N) {
     printf("============================================\n");
@@ -96,6 +113,20 @@ int main(void) {
 	cudaEventCreate(&start);
     cudaEventRecord(start,0);
 
+    matrixMultiplicationKernel<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
+    
+    cudaEventCreate(&stop);
+	cudaEventRecord(stop,0);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&elapsedTime, start,stop);
+
+    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
+    // print_matrix(C, N);
+    printf("SM Runtime : %f ms\n", elapsedTime);
+/*******************************************************/
+	cudaEventCreate(&start);
+    cudaEventRecord(start,0);
+
     mtrx_mult<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
     
     cudaEventCreate(&stop);
@@ -104,8 +135,8 @@ int main(void) {
 	cudaEventElapsedTime(&elapsedTime, start,stop);
 
     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
-    print_matrix(C, N);
-    printf("Elapsed time : %f ms\n", elapsedTime);
+    // print_matrix(C, N);
+    printf("Runtime : %f ms\n", elapsedTime);
 /*******************************************************/
     cudaFree(d_A);
     cudaFree(d_B);
