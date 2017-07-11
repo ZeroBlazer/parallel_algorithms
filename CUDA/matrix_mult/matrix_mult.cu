@@ -45,7 +45,6 @@ void mtrx_mult(float* d_M, float* d_N, float* d_P, int Width) {
 
 __global__
 void matrixMultiplicationKernel(float* A, float* B, float* C, int N) {
-
     int ROW = blockIdx.y*blockDim.y+threadIdx.y;
     int COL = blockIdx.x*blockDim.x+threadIdx.x;
 
