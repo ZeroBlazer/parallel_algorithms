@@ -104,7 +104,7 @@ void Mul_tiled(float *A, float *B, float *C, int n) {
 
 
 int main(int argv, char ** argc) {
-    long n = 1024;
+    long N = 1024;
     float *A,
           *B,
           *C;
@@ -113,12 +113,12 @@ int main(int argv, char ** argc) {
     B = (float*)malloc(N * N * sizeof(float));
     C = (float*)malloc(N * N * sizeof(float));
 
-    for(long long i = 0; i < n*n; i++) {
+    for(long long i = 0; i < N * N; i++) {
         A[i] = 3;
         B[i] = 3;
     }
 
-    Mul_tiled(A, B, C, n);
+    Mul_tiled(A, B, C, N);
     print_matrix(C, N);
     
     free(A);
