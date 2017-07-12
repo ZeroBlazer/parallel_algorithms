@@ -31,8 +31,8 @@ void print_matrix(float* M, int N) {
 __global__
 void MatrixMulKernel(float* M, float* N, float* P, int Width) {
     __shared__ float ds_M[TILE_WIDTH][TILE_WIDTH];
-    __shared__ float ds_N[TILE_WIDTH][TILE_WIDTH];
-    __shared__ float ds_NN[TILE_WIDTH][TILE_WIDTH];
+    __shared__ float ds_N1[TILE_WIDTH][TILE_WIDTH];
+    __shared__ float ds_N2[TILE_WIDTH][TILE_WIDTH];
     
     int bx = blockIdx.x;
     int by = blockIdx.y;
@@ -42,26 +42,25 @@ void MatrixMulKernel(float* M, float* N, float* P, int Width) {
     int Row = by * TILE_WIDTH + ty;
     int Col = bx * 2 * TILE_WIDTH + tx;
 
-    float Pvalue = 0; float Pvalue2 = 0;
+    float Pvalue1 = 0; float Pvalue2 = 0;
     // Loop over the M and N tiles required to compute the P element
     if((Row < Width) && (Col < Width)){
         for (int ph = 0; ph < Width / TILE_WIDTH; ++ph){
 
             // Collaborative loading of M and N tiles into shared memory
             ds_M[ty][tx] = M[Row * Width + ph * TILE_WIDTH + tx];    // ph = tile index
-            ds_N[ty][tx] = N[(ph * TILE_WIDTH + ty) * Width + Col];
-            ds_NN[ty][tx] = N[(ph * TILE_WIDTH + ty) * Width +(Col + TILE_WIDTH)];
+            ds_N1[ty][tx] = N[(ph * TILE_WIDTH + ty) * Width + Col];
+            ds_N2[ty][tx] = N[(ph * TILE_WIDTH + ty) * Width +(Col + TILE_WIDTH)];
             __syncthreads();
 
             for (int i = 0; i < TILE_WIDTH; ++i) {
-                Pvalue += ds_M[ty][i] * ds_N[i][tx];
-                Pvalue2 += ds_M[ty][i] * ds_NN[i][tx];
+                Pvalue1 += ds_M[ty][i] * ds_N1[i][tx];
+                Pvalue2 += ds_M[ty][i] * ds_N2[i][tx];
             }
-
             __syncthreads();
         }
 
-        P[Row * Width + Col] = Pvalue;
+        P[Row * Width + Col] = Pvalue1;
         P[(Row * Width + Col) + TILE_WIDTH] = Pvalue2;
     }
 }
