@@ -12,9 +12,7 @@ void rand_matrix(float* M, int N) {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
     if(row < N && col < N) {
-        // curandState_t state;
-        // curand_init(0, 0, 0, &state);
-        M[row * N + col] = (col + row * col) % MAX;//curand(&state) % MAX;
+        M[row * N + col] = (col + row * col) % MAX;
     }
 }
 
@@ -89,25 +87,26 @@ void Mul_tiled(float *A, float *B, float *C, int N) {
 /****************FILLING RANDOM MATRIX******************/    
     rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_A, N);
     rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_B, N);
-/***************PRINTING RANDOM MATRICES****************/
-    // cudaMemcpy(d_A, A, size, cudaMemcpyHostToDevice);
-    // cudaMemcpy(d_B, B, size, cudaMemcpyHostToDevice);
+/*******************************************************/
     dim3 dimGrid(ceil(N / TILE_WIDTH) / 2, ceil(N / TILE_WIDTH), 1);
     dim3 dimBlock(TILE_WIDTH, TILE_WIDTH, 1);
-    // Prepare
-    cudaEvent_t start, stop;
-    float elapsedTime;
     
-    cudaEventCreate(&start);
+    cudaEvent_t start, stop;
+	float elapsedTime;
+	cudaEventCreate(&start);
     cudaEventRecord(start, 0);
 
     MatrixMulKernel<<<dimGrid,dimBlock>>>(d_A, d_B, d_C, N);
     
-    cudaEventCreate(&stop); 
-    cudaEventRecord(stop, 0);
-    cudaEventSynchronize(stop);
-    cudaEventElapsedTime(&elapsedTime, start, stop); // that's our time!
-    printf("Runtime : %f ms\n", elapsedTime);
+    cudaEventCreate(&stop);
+	cudaEventRecord(stop, 0);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&elapsedTime, start,stop);
+
+    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
+    // print_matrix(C, N);
+    printf("N: %d\n", N);
+    printf("SM Runtime : %f ms\n", elapsedTime);
     
     // Clean up:
     // cudaEventDestroy(start);
