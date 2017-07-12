@@ -116,7 +116,7 @@ void shared_matrix_mult(float *A, float *B, float *C, int N) {
 
 
 int main(int argv, char ** argc) {
-    long N = 1024;
+    long N = 48;
     float *A,
           *B,
           *C;
