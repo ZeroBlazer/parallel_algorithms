@@ -82,16 +82,18 @@ void Mul_tiled(float *A, float *B, float *C, int n) {
     dim3 dimBlock(TILE_WIDTH, TILE_WIDTH, 1);
     // Prepare
     cudaEvent_t start, stop;
+    float elapsedTime;
+    
     cudaEventCreate(&start);
-    cudaEventCreate(&stop); 
-    // Start record
     cudaEventRecord(start, 0);
+
     MatrixMulKernel<<<dimGrid,dimBlock>>>(d_A, d_B, d_C, n);
-    // Stop event
+    
+    cudaEventCreate(&stop); 
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);
-    float elapsedTime;
     cudaEventElapsedTime(&elapsedTime, start, stop); // that's our time!
+    
     // Clean up:
     cudaEventDestroy(start);
     cudaEventDestroy(stop);
