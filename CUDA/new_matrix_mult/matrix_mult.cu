@@ -3,6 +3,7 @@
 
 using namespace std;
 
+#define MAX 200;
 #define TILE_WIDTH 32
 
 __global__
