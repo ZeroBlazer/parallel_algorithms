@@ -3,7 +3,7 @@
 #include <curand_kernel.h>
 
 #define MAX 100
-const int TILE_WIDTH = 16;
+#define TILE_WIDTH = 16;
 
 __global__
 void rand_matrix(float* M, int N) {
