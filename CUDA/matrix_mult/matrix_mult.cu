@@ -131,11 +131,12 @@ int main(void) {
     
     cudaEventCreate(&stop);
 	cudaEventRecord(stop,0);
-	cudaEventSynchronize(stop);
-	cudaEventElapsedTime(&elapsedTime, start,stop);
 
     cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     // print_matrix(C, N);
+	
+    cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&elapsedTime, start,stop);
     printf("Runtime : %f ms\n", elapsedTime);
 /*******************************************************/
     cudaFree(d_A);
