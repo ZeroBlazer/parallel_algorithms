@@ -84,16 +84,16 @@ void shared_matrix_mult(float *A, float *B, float *C, int N) {
         blocksPerGrid.y = ceil(double(N) / double(threadsPerBlock.y));
     }
 /****************FILLING RANDOM MATRIX******************/    
+    cudaEvent_t start, stop;
+	float elapsedTime;
+	cudaEventCreate(&start);
+    cudaEventRecord(start, 0);
+    
     rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_A, N);
     rand_matrix<<<blocksPerGrid, threadsPerBlock>>>(d_B, N);
 /*******************************************************/
     dim3 dimGrid(ceil(N / TILE_WIDTH) / 2, ceil(N / TILE_WIDTH), 1);
     dim3 dimBlock(TILE_WIDTH, TILE_WIDTH, 1);
-    
-    cudaEvent_t start, stop;
-	float elapsedTime;
-	cudaEventCreate(&start);
-    cudaEventRecord(start, 0);
 
     MatrixMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C, N);
     
