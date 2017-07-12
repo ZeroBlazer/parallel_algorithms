@@ -107,7 +107,7 @@ void shared_matrix_mult(float *A, float *B, float *C, int N) {
     printf("N: %d\n", N);
     printf("SM Runtime : %f ms\n", elapsedTime);
     
-    cudaMemcpy(C, d_C, size, cudaMemcpyDeviceToHost);
+    cudaMemcpy(C, d_C, N * N * sizeof(float), cudaMemcpyDeviceToHost);
     
     cudaFree(d_A);
     cudaFree(d_B);
