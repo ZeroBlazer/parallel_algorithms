@@ -121,7 +121,7 @@ int main(int argv, char ** argc) {
     }
 
     Mul_tiled(A, B, C, N);
-    print_matrix(C, N);
+    // print_matrix(C, N);
     
     free(A);
     free(B);
