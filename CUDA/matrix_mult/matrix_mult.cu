@@ -3,7 +3,7 @@
 #include <curand_kernel.h>
 
 #define MAX 100
-const int TILE_WIDTH = 16;
+const int TILE_WIDTH = 32;
 
 __global__
 void rand_matrix(float* M, int N) {
@@ -72,7 +72,7 @@ void print_matrix(float* M, int N) {
 }
 
 int main(void) {
-    int N = 16;  // int N = 1<<20;
+    int N = 1024;  // int N = 1<<20;
     float *A,
           *B,
           *C,
@@ -90,9 +90,9 @@ int main(void) {
 /*******************************************************/
     dim3 threadsPerBlock(N, N);
     dim3 blocksPerGrid(1, 1);
-    if (N*N > 512) {
-        threadsPerBlock.x = 512;
-        threadsPerBlock.y = 512;
+    if (N * N > 1024) {
+        threadsPerBlock.x = 1024;
+        threadsPerBlock.y = 1024;
         blocksPerGrid.x = ceil(double(N)/double(threadsPerBlock.x));
         blocksPerGrid.y = ceil(double(N)/double(threadsPerBlock.y));
     }
