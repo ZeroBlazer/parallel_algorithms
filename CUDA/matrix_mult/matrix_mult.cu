@@ -3,7 +3,7 @@
 #include <curand_kernel.h>
 
 #define MAX 100
-#define TILE_WIDTH = 16;
+const int TILE_WIDTH = 16;
 
 __global__
 void rand_matrix(float* M, int N) {
@@ -110,12 +110,12 @@ int main(void) {
     cudaEvent_t start, stop;
 	float elapsedTime;
 	cudaEventCreate(&start);
-    cudaEventRecord(start, 0);
+    cudaEventRecord(start,0);
 
     matrixMultiplicationKernel<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
     
     cudaEventCreate(&stop);
-	cudaEventRecord(stop, 0);
+	cudaEventRecord(stop,0);
 	cudaEventSynchronize(stop);
 	cudaEventElapsedTime(&elapsedTime, start,stop);
 
