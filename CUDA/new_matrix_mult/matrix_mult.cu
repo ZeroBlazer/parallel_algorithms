@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdio.h>
+
 using namespace std;
 
 #define TILE_WIDTH 32
